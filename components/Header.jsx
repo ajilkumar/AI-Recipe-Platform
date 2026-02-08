@@ -1,18 +1,14 @@
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-} from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
 import React from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { Cookie, Refrigerator } from "lucide-react";
 import UserDropdown from "./UserDropdown";
+import { checkUser } from "@/lib/checkUser";
 
-const Header = () => {
-  const user = null; // Replace it with actual user fetching logic
+const Header = async () => {
+  const user = await checkUser();
 
   return (
     <header
