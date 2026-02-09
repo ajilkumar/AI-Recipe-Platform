@@ -1,10 +1,16 @@
-import { Inter } from "next/font/google";
+import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { neobrutalism } from "@clerk/themes";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const instrumentSerif = Instrument_Serif({
+  weight: "400",
+  subsets: ["latin"],
+  style: "italic",
+  variable: "--font-serif",
+});
 
 export const metadata = {
   title: "Servd - AI Recipe Platform",
@@ -15,7 +21,9 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider appearance={{ baseTheme: neobrutalism }}>
       <html lang="en" suppressHydrationWarning>
-        <body className={`${inter.variable} font-sans antialiased`}>
+        <body
+          className={`${inter.variable} ${instrumentSerif.variable} font-sans antialiased`}
+        >
           {/* Header */}
           <Header />
 

@@ -14,10 +14,9 @@ const Header = async () => {
 
   return (
     <header
-      className={`fixed top-0 w-full border-b border-stone-200 bg-stone-50/80 backdrop-blur-md z-50 
-    supports-backdrop-filter:bg-stone-50/60`}
+      className={`fixed top-0 w-full border-b border-stone-100 bg-white/80 backdrop-blur-xl z-50 transition-all duration-300`}
     >
-      <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <nav className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
         <Link href={user ? "/dashboard" : "/"}>
           {/* Logo */}
           <Image
