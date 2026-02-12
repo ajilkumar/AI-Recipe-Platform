@@ -1,9 +1,5 @@
+const MainLayout = ({ children }) => {
+  return <div className="pt-10">{children}</div>;
+};
 
-
-const MainLayout = () => {
-  return (
-    <div>layout</div>
-  )
-}
-
-export default MainLayout
+export default MainLayout;
