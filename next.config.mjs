@@ -13,6 +13,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "www.themealdb.com",
+        pathname: "/**",
       },
       {
         protocol: "http",
