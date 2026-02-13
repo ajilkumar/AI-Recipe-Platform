@@ -1,4 +1,4 @@
-import { Globe, ArrowRight, Flame, ChefHat, Utensils } from "lucide-react";
+import { Globe, ArrowRight, Flame } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -167,9 +167,7 @@ export default async function DashboardPage() {
             <h2 className="text-2xl md:text-3xl font-bold text-stone-900 mb-3">
               Global Kitchen
             </h2>
-            <p className="text-stone-500">
-              Travel the world from your kitchen
-            </p>
+            <p className="text-stone-500">Travel the world from your kitchen</p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
