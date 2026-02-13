@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { neobrutalism } from "@clerk/themes";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const instrumentSerif = Instrument_Serif({
@@ -29,6 +30,9 @@ export default function RootLayout({ children }) {
 
           {/* Main content */}
           <main className="min-h-screen">{children}</main>
+
+          {/* Toast */}
+          <Toaster richColours/>
 
           {/* Footer */}
           <footer className="py-8 px-4 border-t">

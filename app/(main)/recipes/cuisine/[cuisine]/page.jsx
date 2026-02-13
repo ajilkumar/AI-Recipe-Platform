@@ -6,13 +6,13 @@ import { getMealsByArea } from "@/actions/mealdb.actions";
 
 export default function CategoryRecipesPage() {
   const params = useParams();
-  const cuisine = params.cuisine();
+  const cuisine = params.cuisine;
 
   return (
     <RecipeGrid
       type="cuisine"
       value={cuisine}
-      fetchActions={getMealsByArea}
+      fetchAction={getMealsByArea}
       backlink="/dashboard"
     />
   );
