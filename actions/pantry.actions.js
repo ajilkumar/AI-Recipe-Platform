@@ -2,8 +2,9 @@
 
 import { checkUser } from "@/lib/checkUser";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { freePantryScans, proTierLimit } from "@/lib/arcjet";
+// import { freePantryScans, proTierLimit } from "@/lib/arcjet";
 import { request } from "@arcjet/next";
+import { freePantryScans } from "@/lib/arcjet";
 
 const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 const strapiApiToken = process.env.STRAPI_API_TOKEN;
