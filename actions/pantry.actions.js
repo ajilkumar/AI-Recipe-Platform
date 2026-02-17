@@ -2,7 +2,6 @@
 
 import { checkUser } from "@/lib/checkUser";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-// import { freePantryScans, proTierLimit } from "@/lib/arcjet";
 import { request } from "@arcjet/next";
 import { freePantryScans, proTierLimit } from "@/lib/arcjet";
 
