@@ -2,80 +2,224 @@ import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   page: {
-    padding: 32,
+    padding: 36,
     fontSize: 11,
     fontFamily: "Helvetica",
+    lineHeight: 1.5,
+    color: "#1c1917",
   },
+
+  /* ------------------------------ HEADER ------------------------------ */
+
   title: {
-    fontSize: 20,
-    marginBottom: 8,
+    fontSize: 22,
     fontWeight: "bold",
-  },
-  section: {
-    marginBottom: 16,
-  },
-  heading: {
-    fontSize: 14,
     marginBottom: 6,
+  },
+
+  description: {
+    fontSize: 11,
+    color: "#57534e",
+    marginBottom: 14,
+  },
+
+  divider: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#e7e5e4",
+    marginVertical: 12,
+  },
+
+  /* ------------------------------ META GRID ------------------------------ */
+
+  metaGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 12,
+    marginBottom: 14,
+  },
+
+  metaItem: {
+    width: "48%",
+    backgroundColor: "#f5f5f4",
+    padding: 8,
+    borderRadius: 6,
+  },
+
+  metaLabel: {
+    fontSize: 9,
+    color: "#78716c",
+  },
+
+  metaValue: {
+    fontSize: 11,
     fontWeight: "bold",
   },
-  text: {
+
+  /* ------------------------------ SECTIONS ------------------------------ */
+
+  section: {
+    marginBottom: 18,
+  },
+
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 8,
+    textTransform: "uppercase",
+    letterSpacing: 1,
+  },
+
+  /* ------------------------------ INGREDIENTS ------------------------------ */
+
+  ingredientCategory: {
+    fontSize: 10,
+    fontWeight: "bold",
+    color: "#78716c",
+    marginTop: 8,
     marginBottom: 4,
+  },
+
+  ingredientRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 2,
+  },
+
+  /* ------------------------------ STEPS ------------------------------ */
+
+  stepCard: {
+    borderWidth: 1,
+    borderColor: "#e7e5e4",
+    borderRadius: 6,
+    padding: 10,
+    marginBottom: 8,
+  },
+
+  stepTitle: {
+    fontWeight: "bold",
+    marginBottom: 2,
+  },
+
+  stepTip: {
+    marginTop: 6,
+    backgroundColor: "#fff7ed",
+    padding: 6,
+    borderRadius: 4,
+    fontSize: 10,
+  },
+
+  /* ------------------------------ TIPS ------------------------------ */
+
+  tipItem: {
+    marginBottom: 4,
+  },
+
+  /* ------------------------------ FOOTER ------------------------------ */
+
+  footer: {
+    position: "absolute",
+    bottom: 20,
+    left: 36,
+    right: 36,
+    textAlign: "center",
+    fontSize: 9,
+    color: "#a8a29e",
   },
 });
 
+/* Helper to group ingredients */
+const groupIngredients = (ingredients) =>
+  ingredients.reduce((acc, ing) => {
+    const cat = ing.category || "Other";
+    acc[cat] = acc[cat] || [];
+    acc[cat].push(ing);
+    return acc;
+  }, {});
+
 export function RecipePDF({ recipe }) {
+  const totalTime = parseInt(recipe.prepTime) + parseInt(recipe.cookTime);
+
+  const groupedIngredients = groupIngredients(recipe.ingredients);
+
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
-        {/* Title */}
+      <Page size="A4" style={styles.page} wrap>
+        {/* TITLE */}
         <Text style={styles.title}>{recipe.title}</Text>
-        <Text style={styles.text}>{recipe.description}</Text>
+        <Text style={styles.description}>{recipe.description}</Text>
 
-        {/* Meta */}
-        <View style={styles.section}>
-          <Text>
-            Cuisine: {recipe.cuisine} | Category: {recipe.category}
-          </Text>
-          <Text>
-            Time: {parseInt(recipe.prepTime) + parseInt(recipe.cookTime)} mins
-          </Text>
-          <Text>Servings: {recipe.servings}</Text>
+        {/* META */}
+        <View style={styles.metaGrid}>
+          <Meta label="Cuisine" value={recipe.cuisine} />
+          <Meta label="Category" value={recipe.category} />
+          <Meta label="Total Time" value={`${totalTime} mins`} />
+          <Meta label="Servings" value={recipe.servings} />
         </View>
 
-        {/* Ingredients */}
-        <View style={styles.section}>
-          <Text style={styles.heading}>Ingredients</Text>
-          {recipe.ingredients.map((ing, i) => (
-            <Text key={i} style={styles.text}>
-              • {ing.item} – {ing.amount}
-            </Text>
-          ))}
-        </View>
+        <View style={styles.divider} />
 
-        {/* Instructions */}
+        {/* INGREDIENTS */}
         <View style={styles.section}>
-          <Text style={styles.heading}>Instructions</Text>
-          {recipe.instructions.map((step) => (
-            <View key={step.step} style={{ marginBottom: 6 }}>
-              <Text>
-                {step.step}. {step.title}
-              </Text>
-              <Text>{step.instruction}</Text>
+          <Text style={styles.sectionTitle}>Ingredients</Text>
+
+          {Object.entries(groupedIngredients).map(([cat, items]) => (
+            <View key={cat}>
+              <Text style={styles.ingredientCategory}>{cat}</Text>
+
+              {items.map((ing, i) => (
+                <View key={i} style={styles.ingredientRow}>
+                  <Text>{ing.item}</Text>
+                  <Text>{ing.amount}</Text>
+                </View>
+              ))}
             </View>
           ))}
         </View>
 
-        {/* Tips */}
+        {/* INSTRUCTIONS */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Instructions</Text>
+
+          {recipe.instructions.map((step) => (
+            <View key={step.step} style={styles.stepCard}>
+              <Text style={styles.stepTitle}>
+                {step.step}. {step.title}
+              </Text>
+
+              <Text>{step.instruction}</Text>
+
+              {step.tip && (
+                <Text style={styles.stepTip}>Pro tip: {step.tip}</Text>
+              )}
+            </View>
+          ))}
+        </View>
+
+        {/* CHEF TIPS */}
         {recipe.tips?.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.heading}>Chef’s Tips</Text>
+            <Text style={styles.sectionTitle}>Chef’s Tips</Text>
+
             {recipe.tips.map((tip, i) => (
-              <Text key={i}>• {tip}</Text>
+              <Text key={i} style={styles.tipItem}>
+                • {tip}
+              </Text>
             ))}
           </View>
         )}
+
+        {/* FOOTER BRANDING */}
+        <Text style={styles.footer}>Generated by Your AI Recipe Platform</Text>
       </Page>
     </Document>
   );
 }
+
+/* ---------------- META ITEM COMPONENT ---------------- */
+
+const Meta = ({ label, value }) => (
+  <View style={styles.metaItem}>
+    <Text style={styles.metaLabel}>{label}</Text>
+    <Text style={styles.metaValue}>{value}</Text>
+  </View>
+);

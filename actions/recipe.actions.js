@@ -10,7 +10,7 @@ const strapiApiToken = process.env.STRAPI_API_TOKEN;
 const GeminiApiKey = process.env.GEMINI_API_KEY;
 
 const genAI = new GoogleGenerativeAI(GeminiApiKey);
-const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
+const unsplashAccessKey = process.env.UNSPLASH_ACCESS_KEY;
 
 // Helper function to normalize recipe title
 function normalizeTitle(title) {
@@ -24,8 +24,8 @@ function normalizeTitle(title) {
 // Helper function to fetch image from Unsplash
 async function fetchRecipeImage(recipeName) {
   try {
-    if (!UNSPLASH_ACCESS_KEY) {
-      console.warn("⚠️ UNSPLASH_ACCESS_KEY not set, skipping image fetch");
+    if (!unsplashAccessKey) {
+      console.warn("⚠️ unsplash Access Key not set, skipping image fetch");
       return "";
     }
 
@@ -36,7 +36,7 @@ async function fetchRecipeImage(recipeName) {
       )}&per_page=1&orientation=landscape`,
       {
         headers: {
-          Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
+          Authorization: `Client-ID ${unsplashAccessKey}`,
         },
       },
     );
