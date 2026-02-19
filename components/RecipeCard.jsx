@@ -84,7 +84,7 @@ export default function RecipeCard({ recipe, variant = "default" }) {
                 <ChefHat className="w-12 h-12 text-orange-200" />
               </div>
             )}
-            
+
             {/* Gradient Overlay on Hover */}
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
           </div>
@@ -244,81 +244,84 @@ export default function RecipeCard({ recipe, variant = "default" }) {
   // Variant: list (for saved recipes, search results)
   if (variant === "list") {
     return (
-      <Link href={data.href}>
-        <Card className="rounded-none border-stone-200 hover:shadow-lg hover:border-orange-200 transition-all cursor-pointer group overflow-hidden py-0">
-          <div className="flex flex-col md:flex-row">
-            {/* Image (if available) */}
-            {data.showImage ? (
-              <div className="relative w-full md:w-48 aspect-video md:aspect-square shrink-0">
+      <Link href={data.href} className="group block h-full">
+        <Card className="h-full overflow-hidden rounded-2xl border border-stone-200 bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-orange-200">
+          <div className="flex flex-col sm:flex-row h-full">
+            {/* Image */}
+            <div className="ml-2 rounded-xl relative w-full sm:w-44 md:w-52 aspect-4/3 sm:aspect-square shrink-0 overflow-hidden bg-stone-100">
+              {data.showImage ? (
                 <Image
                   src={data.image}
                   alt={data.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 768px) 100vw, 192px"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 640px) 100vw, 200px"
                 />
-              </div>
-            ) : (
-              // Fallback gradient when no image
-              <div className="relative w-full md:w-48 aspect-video md:aspect-square shrink-0 bg-linear-to-br from-orange-400 to-amber-400 flex items-center justify-center">
-                <ChefHat className="w-12 h-12 text-white/30" />
-              </div>
-            )}
+              ) : (
+                <div className="w-full h-full bg-linear-to-br from-orange-100 to-amber-100 flex items-center justify-center">
+                  <ChefHat className="w-10 h-10 text-orange-300" />
+                </div>
+              )}
+            </div>
 
             {/* Content */}
-            <div className="flex-1 py-5">
-              <CardHeader>
-                <div className="flex flex-wrap gap-2 mb-2">
-                  {data.cuisine && (
-                    <Badge
-                      variant="outline"
-                      className="text-orange-600 border-orange-200 capitalize"
-                    >
-                      {data.cuisine}
-                    </Badge>
+            <div className="flex flex-col flex-1 p-5">
+              {/* Top badges */}
+              <div className="flex flex-wrap gap-2 mb-2">
+                {data.cuisine && (
+                  <Badge
+                    variant="outline"
+                    className="text-orange-600 border-orange-200 capitalize"
+                  >
+                    {data.cuisine}
+                  </Badge>
+                )}
+                {data.category && (
+                  <Badge
+                    variant="outline"
+                    className="text-stone-600 border-stone-200 capitalize"
+                  >
+                    {data.category}
+                  </Badge>
+                )}
+              </div>
+
+              {/* Title */}
+              <h3 className="text-lg font-semibold text-stone-900 leading-snug group-hover:text-orange-600 transition-colors line-clamp-2">
+                {data.title}
+              </h3>
+
+              {/* Description */}
+              {data.description && (
+                <p className="text-sm text-stone-500 mt-1 line-clamp-2">
+                  {data.description}
+                </p>
+              )}
+
+              {/* Spacer */}
+              <div className="flex-1" />
+
+              {/* Meta */}
+              {(data.prepTime || data.cookTime || data.servings) && (
+                <div className="flex flex-wrap items-center gap-4 text-sm text-stone-500 mt-4">
+                  {(data.prepTime || data.cookTime) && (
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="w-4 h-4" />
+                      <span>
+                        {parseInt(data.prepTime || 0) +
+                          parseInt(data.cookTime || 0)}{" "}
+                        mins
+                      </span>
+                    </div>
                   )}
-                  {data.category && (
-                    <Badge
-                      variant="outline"
-                      className="text-stone-600 border-stone-200 capitalize"
-                    >
-                      {data.category}
-                    </Badge>
+
+                  {data.servings && (
+                    <div className="flex items-center gap-1.5">
+                      <Users className="w-4 h-4" />
+                      <span>{data.servings} servings</span>
+                    </div>
                   )}
                 </div>
-
-                <CardTitle className="text-xl font-bold text-stone-900 group-hover:text-orange-600 transition-colors">
-                  {data.title}
-                </CardTitle>
-
-                {data.description && (
-                  <CardDescription className="line-clamp-2">
-                    {data.description}
-                  </CardDescription>
-                )}
-              </CardHeader>
-
-              {(data.prepTime || data.cookTime || data.servings) && (
-                <CardContent>
-                  <div className="flex gap-4 text-sm text-stone-500 pt-4">
-                    {(data.prepTime || data.cookTime) && (
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        <span>
-                          {parseInt(data.prepTime || 0) +
-                            parseInt(data.cookTime || 0)}{" "}
-                          mins
-                        </span>
-                      </div>
-                    )}
-                    {data.servings && (
-                      <div className="flex items-center gap-1">
-                        <Users className="w-4 h-4" />
-                        <span>{data.servings} servings</span>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
               )}
             </div>
           </div>
