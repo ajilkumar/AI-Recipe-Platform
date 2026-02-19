@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-// import useFetch from "@/hooks/useFetch";
 import RecipeCard from "@/components/RecipeCard";
 import { useFetch } from "@/hooks/useFetch";
 
