@@ -87,6 +87,7 @@ function RecipeContent() {
   const {
     loading: loadingRecipe,
     data: recipeData,
+    error: recipeError,
     fn: fetchRecipe,
   } = useFetch(getOrGenerateRecipe);
 
@@ -140,9 +141,13 @@ function RecipeContent() {
     const formData = new FormData();
     formData.append("recipeId", recipeId);
 
-    isSaved
-      ? await removeFromCollection(formData)
-      : await saveToCollection(formData);
+    if (isSaved) {
+      await removeFromCollection(formData);
+      router.refresh(); // Force refresh server components and clear router cache
+    } else {
+      await saveToCollection(formData);
+      router.refresh();
+    }
   };
 
   /* -------------------------------------------------------------------------- */
@@ -154,7 +159,8 @@ function RecipeContent() {
   if (loadingRecipe === null || loadingRecipe)
     return <LoadingState recipeName={recipeName} />;
 
-  if (loadingRecipe === false && !recipe) return <ErrorState router={router} />;
+  if (loadingRecipe === false && !recipe)
+    return <ErrorState router={router} error={recipeError?.message} />;
 
   /* -------------------------------------------------------------------------- */
   /*                                 MAIN UI                                    */
@@ -427,10 +433,12 @@ const EmptyState = () => (
   </div>
 );
 
-const ErrorState = ({ router }) => (
+const ErrorState = ({ router, error }) => (
   <div className="min-h-screen flex flex-col items-center justify-center text-center px-4">
     <AlertCircle className="w-10 h-10 text-red-600 mb-4" />
-    <p className="mb-4">Failed to load recipe</p>
+    <p className="mb-4 text-stone-900 font-medium">
+      {error || "Failed to load recipe"}
+    </p>
     <Button onClick={() => router.back()}>Go back</Button>
   </div>
 );
