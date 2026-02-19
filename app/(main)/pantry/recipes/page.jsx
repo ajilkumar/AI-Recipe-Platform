@@ -13,7 +13,7 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {useFetch} from "@/hooks/useFetch";
+import { useFetch } from "@/hooks/useFetch";
 import { getRecipesByPantryIngredients } from "@/actions/recipe.actions";
 import RecipeCard from "@/components/RecipeCard";
 import PricingModal from "@/components/PricingModal";
@@ -52,7 +52,8 @@ export default function PantryRecipesPage() {
 
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-stone-900">
-                AI Recipe <span className="font-serif text-orange-600">Suggestions</span>
+                AI Recipe{" "}
+                <span className="font-serif text-orange-600">Suggestions</span>
               </h1>
               <p className="text-sm text-stone-500">
                 Based on your available ingredients

@@ -104,7 +104,6 @@ export default function RecipeCard({ recipe, variant = "default" }) {
   if (variant === "pantry") {
     return (
       <Card className="h-full flex flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-
         {data.showImage && (
           <div className="relative aspect-video overflow-hidden">
             <Image
@@ -118,38 +117,36 @@ export default function RecipeCard({ recipe, variant = "default" }) {
         )}
 
         <CardHeader className="pb-3">
-
           {/* TAG ROW WITH MATCH % */}
           <div className="flex justify-between gap-2 mb-2">
-<div className="flex items-center justify-center">
-            {data.cuisine && (
-              <Badge variant="outline" className="capitalize">
-                {data.cuisine}
-              </Badge>
-            )}
+            <div className="flex items-center justify-center">
+              {data.cuisine && (
+                <Badge variant="outline" className="capitalize">
+                  {data.cuisine}
+                </Badge>
+              )}
 
-            {data.category && (
-              <Badge variant="outline" className="capitalize">
-                {data.category}
-              </Badge>
-            )}
+              {data.category && (
+                <Badge variant="outline" className="capitalize">
+                  {data.category}
+                </Badge>
+              )}
             </div>
 
             <div>
-
-            {data.matchPercentage !== undefined && (
-              <Badge
-                className={`text-white ${
-                  data.matchPercentage >= 90
-                    ? "bg-green-600"
-                    : data.matchPercentage >= 75
-                    ? "bg-orange-600"
-                    : "bg-stone-600"
-                }`}
-              >
-                {data.matchPercentage}% Match
-              </Badge>
-            )}
+              {data.matchPercentage !== undefined && (
+                <Badge
+                  className={`text-white ${
+                    data.matchPercentage >= 90
+                      ? "bg-green-600"
+                      : data.matchPercentage >= 75
+                        ? "bg-orange-600"
+                        : "bg-stone-600"
+                  }`}
+                >
+                  {data.matchPercentage}% Match
+                </Badge>
+              )}
             </div>
           </div>
 
@@ -165,7 +162,6 @@ export default function RecipeCard({ recipe, variant = "default" }) {
         </CardHeader>
 
         <CardContent className="space-y-4 flex-1">
-
           {/* META */}
           <div className="flex flex-wrap gap-4 text-sm text-stone-500">
             {(data.prepTime || data.cookTime) && (
