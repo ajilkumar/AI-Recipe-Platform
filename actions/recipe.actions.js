@@ -26,7 +26,7 @@ function normalizeTitle(title) {
 async function fetchRecipeImage(recipeName) {
   try {
     if (!unsplashAccessKey) {
-      console.warn("⚠️ unsplash Access Key not set, skipping image fetch");
+      console.warn("⚠️ Unsplash Access Key not set, skipping image fetch");
       return "";
     }
 
@@ -643,12 +643,8 @@ export async function getSavedRecipes() {
 
     // Extract recipes from saved-recipes relations
     const recipes = data.data
-      .map((item) => ({
-        id: item.attributes.recipe.data.id,
-        ...item.attributes.recipe.data.attributes,
-      }))
+      .map((savedRecipe) => savedRecipe.recipe)
       .filter(Boolean);
-
     // console.log(`User's saved recipes: `, recipes)
 
     return {
