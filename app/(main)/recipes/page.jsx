@@ -22,6 +22,8 @@ export default function SavedRecipesPage() {
 
   const recipes = recipesData?.recipes || [];
 
+  console.log('Users saved recipes: ', recipes) // debug log
+
   return (
     <div className="min-h-screen bg-linear-to-b from-stone-50 to-white mt-8">
       {/* Sticky Header */}

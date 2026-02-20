@@ -133,7 +133,7 @@ export async function getOrGenerateRecipe(formData) {
     // Step 2: Recipe doesn't exist, generate with Gemini
     console.log("🤖 Recipe not found, generating with Gemini...");
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
     const prompt = `
 You are a professional chef and recipe expert. Generate a detailed recipe for: "${normalizedTitle}"
@@ -205,7 +205,7 @@ Guidelines:
 `;
 
     const result = await model.generateContent(prompt);
-    const response = await result.response;
+    const response = result.response;
     const text = response.text();
 
     // Parse JSON response
@@ -335,7 +335,7 @@ Guidelines:
     console.error("❌ Error in getOrGenerateRecipe:", error);
     if (error.status === 429 || error.message?.includes("quota")) {
       throw new Error(
-        "AI service quota exceeded. Please try again later or upgrade your plan."
+        "AI service quota exceeded. Please try again later or upgrade your plan.",
       );
     }
     throw new Error(error.message || "Failed to get or generate recipe");
@@ -429,6 +429,7 @@ export async function removeRecipeFromCollection(formData) {
     }
 
     const recipeId = formData.get("recipeId");
+    // console.log('Recipe ID: ', recipeId) // debug log
     if (!recipeId) {
       throw new Error("Recipe ID is required");
     }
@@ -448,7 +449,10 @@ export async function removeRecipeFromCollection(formData) {
       throw new Error("Failed to find saved recipe");
     }
 
+    // console.log(`Search response: `, searchResponse) // debug log
+
     const searchData = await searchResponse.json();
+    // console.log(`Search data: `, searchData) // debug log
 
     if (!searchData.data || searchData.data.length === 0) {
       return {
@@ -459,7 +463,7 @@ export async function removeRecipeFromCollection(formData) {
 
     // Delete saved recipe relation
     const savedRecipeId = searchData.data[0].id;
-    console.log(`🗑️ Deleting saved recipe relation with ID: ${savedRecipeId}`);
+    // console.log(`Saved recipe ID: `, savedRecipeId) // debug log
     const deleteResponse = await fetch(
       `${strapiUrl}/api/saved-recipes/${savedRecipeId}`,
       {
@@ -470,13 +474,13 @@ export async function removeRecipeFromCollection(formData) {
       },
     );
 
+    // const formattedResponse = await deleteResponse.json()
     if (!deleteResponse.ok) {
-      const errorText = await deleteResponse.text();
-      console.error("❌ Failed to delete relation:", errorText);
       throw new Error("Failed to remove recipe from collection");
     }
 
-    console.log("✅ Recipe removed from user collection successfully");
+    console.log("✅ Recipe removed from user collection");
+    // console.log(`Removed bookmark response: `, formattedResponse) // debug log
 
     return {
       success: true,
@@ -485,9 +489,6 @@ export async function removeRecipeFromCollection(formData) {
   } catch (error) {
     console.error("❌ Error removing recipe from collection:", error);
     throw new Error(error.message || "Failed to remove recipe");
-  } finally {
-    revalidatePath("/recipes");
-    revalidatePath("/dashboard");
   }
 }
 
@@ -608,7 +609,7 @@ Rules:
     console.error("❌ Error in getRecipesByPantryIngredients:", error);
     if (error.status === 429 || error.message?.includes("quota")) {
       throw new Error(
-        "AI service quota exceeded. Please try again later or upgrade your plan."
+        "AI service quota exceeded. Please try again later or upgrade your plan.",
       );
     }
     throw new Error(error.message || "Failed to get recipe suggestions");
@@ -642,8 +643,13 @@ export async function getSavedRecipes() {
 
     // Extract recipes from saved-recipes relations
     const recipes = data.data
-      .map((savedRecipe) => savedRecipe.recipe)
-      .filter(Boolean); // Remove any null recipes
+      .map((item) => ({
+        id: item.attributes.recipe.data.id,
+        ...item.attributes.recipe.data.attributes,
+      }))
+      .filter(Boolean);
+
+    // console.log(`User's saved recipes: `, recipes)
 
     return {
       success: true,
