@@ -15,11 +15,11 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-white text-stone-900 selection:bg-orange-100 selection:text-orange-900 overflow-x-hidden">
       {/* Hero section */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-4">
+      <section className="relative pt-24 pb-20 md:pt-20 md:pb-32 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
             {/* Text Content */}
-            <div className="flex-1 text-center lg:text-left space-y-8">
+            <div className="flex-1 text-center lg:text-left space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-orange-100 text-orange-600 text-sm font-semibold animate-in fade-in slide-in-from-bottom-3 duration-700">
                 <Sparkles className="w-4 h-4 fill-orange-600/20" />
                 <span>AI-Powered Recipe Generation</span>
