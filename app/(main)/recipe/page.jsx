@@ -106,7 +106,12 @@ function RecipeContent() {
   /* ------------------------------ FETCH RECIPE ----------------------------- */
 
   useEffect(() => {
-    if (recipeName && !recipe) {
+    if (recipeName) {
+      // Reset states when starting a new fetch
+      setRecipe(null);
+      setRecipeId(null);
+      setIsSaved(false);
+
       const formData = new FormData();
       formData.append("recipeName", recipeName);
       fetchRecipe(formData);
